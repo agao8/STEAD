@@ -65,7 +65,7 @@ if __name__ == '__main__':
     device = torch.device("cuda")   
     if args.model_arch == 'base':
         model = Model()
-    elif args.model_arch == 'fast':
+    elif args.model_arch == 'fast' or args.model_arch == 'tiny':
         model = Model(ff_mult = 1, dims = (32,32), depths = (1,1))
     else:
         print('Model architecture not recognized')

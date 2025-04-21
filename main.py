@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     if args.model_arch == 'base':
         model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate)
-    elif args.model_arch == 'fast':
+    elif args.model_arch == 'fast' or args.model_arch == 'tiny':
         model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate, ff_mult = 1, dims = (32,32), depths = (1,1))
     else:
         print("Model architecture not recognized")
