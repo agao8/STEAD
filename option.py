@@ -14,7 +14,8 @@ def parse_args():
 
 
     parser.add_argument('--model_name', default='model', help='name to save model')
-    parser.add_argument('--pretrained_ckpt', default= None, help='ckpt for pretrained model')
+    parser.add_argument('--model_arch', default='fast', help='base or fast')
+    parser.add_argument('--pretrained_ckpt', default= None, help='ckpt for pretrained model (for training)')
     parser.add_argument('--max_epoch', type=int, default=30, help='maximum iteration to train (default: 10)')
     parser.add_argument('--warmup', type=int, default=1, help='number of warmup epochs')
 

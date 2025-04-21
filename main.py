@@ -16,7 +16,7 @@ from test import test
 import datetime
 import os
 import random
-
+import sys
 
 
 def save_config(save_path):
@@ -56,7 +56,13 @@ if __name__ == '__main__':
     test_loader = DataLoader(Dataset(args, test_mode=True),
                              batch_size=args.batch_size)
 
-    model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate)
+    if args.model_arch == 'base':
+        model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate)
+    elif args.model_arch == 'fast':
+        model = Model(dropout = args.dropout_rate, attn_dropout=args.attn_dropout_rate, ff_mult = 1, dims = (32,32), depths = (1,1))
+    else:
+        print("Model architecture not recognized")
+        sys.exit()
     model.apply(init_weights)
 
     if args.pretrained_ckpt is not None:

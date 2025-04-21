@@ -10,6 +10,8 @@ from dataset import Dataset
 from torchinfo import summary
 import umap
 import numpy as np
+#import time
+import sys
 
 MODEL_LOCATION = 'saved_models/'
 MODEL_NAME = '888tiny'
@@ -23,6 +25,7 @@ def test(dataloader, model, args, device = 'cuda', name = "training", main = Fal
         pred = []
         labels = []
         feats = []
+        #time_start = time.time()
         for _, inputs in tqdm(enumerate(dataloader)):
             labels += inputs[1].cpu().detach().tolist()
             input = inputs[0].to(device)
@@ -31,7 +34,7 @@ def test(dataloader, model, args, device = 'cuda', name = "training", main = Fal
             pred_ = scores.cpu().detach().tolist()
             feats += feat.cpu().detach().tolist()
             pred += pred_
-
+        #print("Time taken to process " + str(len(dataloader)) + " inputs: " + str(time.time() - time_start))
         fpr, tpr, threshold = roc_curve(labels, pred)
         roc_auc = auc(fpr, tpr)
         precision, recall, th = precision_recall_curve(labels, pred)
@@ -60,7 +63,13 @@ def test(dataloader, model, args, device = 'cuda', name = "training", main = Fal
 if __name__ == '__main__':
     args = option.parse_args()
     device = torch.device("cuda")   
-    model = Model()
+    if args.model_arch == 'base':
+        model = Model()
+    elif args.model_arch == 'fast':
+        model = Model(ff_mult = 1, dims = (32,32), depths = (1,1))
+    else:
+        print('Model architecture not recognized')
+        sys.exit()
     test_loader = DataLoader(Dataset(args, test_mode=True),
                               batch_size=args.batch_size, shuffle=False,
                               num_workers=0, pin_memory=False)

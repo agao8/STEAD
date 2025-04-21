@@ -53,11 +53,14 @@ class Model(nn.Module):
         *,
         dropout = 0.2,
         attn_dropout = 0.1,
-        ff_mult = 1,
-    ):
-        dims = (32, 32)
-        depths = (1, 1)
+        ff_mult = 4,
+        dims = (192, 128),
+        depths = (3, 3),
         block_types = ('c', 'a')
+    ):
+        dims = dims
+        depths = depths
+        block_types = block_types
         super().__init__()
         self.init_dim, *_, last_dim = dims
 
